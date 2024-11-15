@@ -13,4 +13,5 @@
     height: 20px;
     background-color: red;
     display: none;
+    pointer-events: none;
 }
