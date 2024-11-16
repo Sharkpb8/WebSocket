@@ -1,10 +1,12 @@
 const socket = io();
 const editorContainer = document.getElementById('editorContainer');
-const status = document.getElementById('status');
 const connectedUsers = document.getElementById('connectedUsers');
 const cursor = document.getElementById('cursor');
 let username;
 
+
+//odchozí
+// přidá k do listu users user se zadaným jmenem
 document.getElementById('join').onclick = function() {
     username = document.getElementById('username').value;
     if (username) {
@@ -12,26 +14,27 @@ document.getElementById('join').onclick = function() {
     }
 };
 
+//odchozí
+//pošle editovaný text 
 editorContainer.addEventListener('input', () => {
     socket.emit('text change', { text: editorContainer.innerText });
 });
 
+//příchozí
+//update textu podle příchozího
 socket.on('document update', (text) => {
     editorContainer.innerText = text;
 });
 
+//příchozí
+//upraví list useru
 socket.on('user list', (users) => {
     connectedUsers.innerHTML = 'Připojení uživatelé: ' + users.map(user => user.name).join(', ');
 });
 
-socket.on('connect', () => {
-    status.innerText = 'Připojeno ke serveru';
-});
 
-socket.on('disconnect', () => {
-    status.innerText = 'Odpojeno od serveru';
-});
-
+//odchozí
+//vezme pozici myši a pošle ji
 editorContainer.addEventListener('mousemove', (event) => {
     cursor.style.left = event.clientX + 'px';
     cursor.style.top = event.clientY + 'px';
@@ -39,6 +42,9 @@ editorContainer.addEventListener('mousemove', (event) => {
     socket.emit('cursor update', { position: { x: event.clientX, y: event.clientY } });
 });
 
+
+//příchozí
+//updatuje pozicic miši
 socket.on('cursor update', (data) => {
     if (data.id !== socket.id) {
         cursor.style.left = data.position.x + 'px';

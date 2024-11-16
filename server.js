@@ -15,30 +15,36 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html')); // Serve index.html
 });
 
+
+//při připojení
 io.on('connection', (socket) => {
     console.log('User connected');
     
-    // Přidání nového uživatele
+    //odchozí
+    // přijme nového uživatele přidá do listu a ten pošle
     socket.on('new user', (username) => {
         users.push({ id: socket.id, name: username });
         io.emit('user list', users);
         io.emit('document update', documentText); // Pošleme dokument novému uživateli
     });
 
-    // Příjem úpravy textu
+    //odchozí
+    // přijme upravený text a rozešle ho
     socket.on('text change', (data) => {
         documentText = data.text;
         socket.broadcast.emit('document update', documentText);
     });
 
-    // Zpracování odpojení uživatele
+    //odchozí
+    // při odpojení smaže usera z listu a ten pošle
     socket.on('disconnect', () => {
         console.log('A user disconnected');
         users = users.filter(user => user.id !== socket.id);
         io.emit('user list', users);
     });
 
-    // Zpracování kurzoru
+    //odchozí
+    // přijme pozici myši a tu pošle
     socket.on('cursor update', (data) => {
         socket.broadcast.emit('cursor update', { id: socket.id, position: data.position });
     });
