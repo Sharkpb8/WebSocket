@@ -59,13 +59,11 @@ editorContainer.addEventListener('mousemove', (event) => {
 //příchozí
 //updatuje pozicic miši
 socket.on('cursor update', (data) => {
-    if(false){
-    if (data.id !== socket.id) {
-        cursor.style.left = data.position.x + 'px';
-        cursor.style.top = data.position.y + 'px';
-        cursor.style.display = 'block';
-    }
-    }
+    console.log(data.userid)
+    othercursor  = document.getElementById(data.userid);
+    othercursor.style.left = data.position.x + 'px';
+    othercursor.style.top = data.position.y + 'px';
+    othercursor.style.display = 'block';
 });
 
 //vytvoří nový cursor
@@ -75,11 +73,16 @@ function newcursor(color){
     if(!color){
         color = generate_color();
         console.log("color created")
+        newDiv.className = "cursor";
+        newDiv.style["background-color"]= color;
+        newDiv.setAttribute('id',color)
+        userid = color;
+    }else{
+        console.log("color created")
+        newDiv.className = "cursor";
+        newDiv.style["background-color"]= color;
+        newDiv.setAttribute('id',color)
     }
-    newDiv.className = "cursor";
-    newDiv.style["background-color"]= color;
-    newDiv.setAttribute('id',color)
-    userid = color;
 }
 
 //generuje barvu
