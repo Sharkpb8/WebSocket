@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Edit Text App</title>
+    <title>Ječná Docs</title>
     <link rel="stylesheet" href="./style.css">
 </head>
 <body>
 
-    <h1>Live Edit Text App</h1>
+    <h1>Ječná Docs</h1>
     <input type="text" id="username" placeholder="Zadejte své jméno" />
     <button id="join">Připojit</button>
-    <div id="connectedUsers"></div>
+    <div id="connectedUsers">Připojení uživatelé: </div>
     <div id="editorContainer" contenteditable="true"></div>
-    <div class="cursor" id="cursor"></div>
+    <!-- <div class="cursor" id="cursor"></div> -->
     
     <script src="/socket.io/socket.io.js"></script>
     <script src="./script.js"></script>
