@@ -46,7 +46,6 @@ io.on('connection', (socket) => {
     //odchozí
     // přijme pozici myši a tu pošle
     socket.on('cursor update', (data) => {
-        console.log(data.cursor,data.position)
         socket.broadcast.emit('cursor update', { userid: data.cursor, position: data.position });
     });
 

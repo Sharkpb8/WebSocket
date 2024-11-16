@@ -4,6 +4,7 @@ const connectedUsers = document.getElementById('connectedUsers');
 let cursor;
 let username;
 let userid;
+let connected = false;
 
 //odchozí
 // přidá k do listu users user se zadaným jmenem
@@ -18,6 +19,10 @@ document.getElementById('join').onclick = function() {
         newcursor();
         cursor = document.getElementById(userid);
         socket.emit('create cursor',{cursor:userid})
+        const status = document.getElementById("status");
+        status.innerText = "Připojeno";
+        connected = true;
+        editorContainer.setAttribute('contenteditable', 'true');
     }
 };
 
