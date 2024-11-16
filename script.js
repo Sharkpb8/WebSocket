@@ -17,6 +17,7 @@ document.getElementById('join').onclick = function() {
         button.remove();
         newcursor();
         cursor = document.getElementById(userid);
+        socket.emit('create cursor',{cursor:userid})
     }
 };
 
@@ -38,6 +39,10 @@ socket.on('user list', (users) => {
     connectedUsers.innerHTML = 'Připojení uživatelé: ' + users.map(user => user.name).join(', ');
 });
 
+socket.on('create cursor', (data) => {
+    newcursor(data.userid);
+});
+
 
 //odchozí
 //vezme pozici myši a pošle ji
@@ -46,7 +51,7 @@ editorContainer.addEventListener('mousemove', (event) => {
         cursor.style.left = event.clientX + 'px';
         cursor.style.top = event.clientY + 'px';
         cursor.style.display = 'block';
-        socket.emit('cursor update', { position: { x: event.clientX, y: event.clientY } });
+        socket.emit('cursor update', { position: { x: event.clientX, y: event.clientY },cursor: userid });
     }
 });
 
@@ -54,18 +59,23 @@ editorContainer.addEventListener('mousemove', (event) => {
 //příchozí
 //updatuje pozicic miši
 socket.on('cursor update', (data) => {
+    if(false){
     if (data.id !== socket.id) {
         cursor.style.left = data.position.x + 'px';
         cursor.style.top = data.position.y + 'px';
         cursor.style.display = 'block';
     }
+    }
 });
 
 //vytvoří nový cursor
-function newcursor(){
+function newcursor(color){
     const newDiv = document.createElement("div");
     document.body.appendChild(newDiv);
-    color = generate_color();
+    if(!color){
+        color = generate_color();
+        console.log("color created")
+    }
     newDiv.className = "cursor";
     newDiv.style["background-color"]= color;
     newDiv.setAttribute('id',color)

@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
 //při připojení
 io.on('connection', (socket) => {
     console.log('User connected');
-    
+
     //odchozí
     // přijme nového uživatele přidá do listu a ten pošle
     socket.on('new user', (username) => {
@@ -46,7 +46,12 @@ io.on('connection', (socket) => {
     //odchozí
     // přijme pozici myši a tu pošle
     socket.on('cursor update', (data) => {
-        socket.broadcast.emit('cursor update', { id: socket.id, position: data.position });
+        socket.broadcast.emit('cursor update', { userid: data.cursor, position: data.position });
+    });
+
+    socket.on('create cursor', (data) => {
+        socket.broadcast.emit('create cursor', { userid: data.cursor });
+        console.log(data)
     });
 });
 
